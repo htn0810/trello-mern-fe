@@ -1,3 +1,4 @@
+import ListColumns from "@/pages/Boards/BoardContent/ListColumns/ListColumns";
 import { Box } from "@mui/material";
 
 const BoardContent = () => {
@@ -5,12 +6,13 @@ const BoardContent = () => {
     <Box
       sx={{
         width: "100%",
-        height: (theme) =>
-          `calc(100% - ${theme.trello.appBarHeight} - ${theme.trello.boardBarHeight})`,
+        height: (theme) => theme.trello.boardContentHeight,
         backgroundColor: "primary.main",
+        p: "10px 0",
+        m: "5px 0",
       }}
     >
-      Board content
+      <ListColumns />
     </Box>
   );
 };
