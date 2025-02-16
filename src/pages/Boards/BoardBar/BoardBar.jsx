@@ -5,8 +5,9 @@ import BoltIcon from "@mui/icons-material/Bolt";
 import AddToDriveIcon from "@mui/icons-material/AddToDrive";
 import PublicIcon from "@mui/icons-material/Public";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { capitalizeFirstLetter } from "@/utils/formatter";
 
-const BoardBar = () => {
+const BoardBar = ({ board }) => {
   return (
     <Box
       px={2}
@@ -35,7 +36,7 @@ const BoardBar = () => {
             },
           }}
         >
-          HTN MERN Stack Board!
+          {board.title}
         </Button>
         <Button
           startIcon={<PublicIcon />}
@@ -45,7 +46,7 @@ const BoardBar = () => {
             },
           }}
         >
-          Public/Private Workspace
+          {capitalizeFirstLetter(board.type)}
         </Button>
         <Button
           startIcon={<AddToDriveIcon />}

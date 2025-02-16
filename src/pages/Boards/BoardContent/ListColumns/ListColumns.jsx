@@ -2,7 +2,7 @@ import Column from "@/pages/Boards/BoardContent/ListColumns/Column/Column";
 import { Box, Button } from "@mui/material";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 
-const ListColumns = () => {
+const ListColumns = ({ columns }) => {
   return (
     <Box
       sx={{
@@ -17,8 +17,9 @@ const ListColumns = () => {
         },
       }}
     >
-      <Column />
-      <Column />
+      {columns?.map((column) => (
+        <Column column={column} key={column._id} />
+      ))}
 
       <Box
         sx={{
