@@ -13,6 +13,7 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { Box } from "@mui/material";
+import { cloneDeep } from "lodash";
 import { useEffect, useState } from "react";
 
 const ACTIVE_DRAG_ITEM_TYPE = {
@@ -44,7 +45,14 @@ const BoardContent = ({ board }) => {
     setOrderedColumns(mapOrder(board?.columns, board?.columnOrderIds, "_id"));
   }, [board]);
 
+  const findColumnByCardId = (cardId) => {
+    return orderedColumns.find((column) =>
+      column?.cards.map((card) => card._id)?.includes(cardId)
+    );
+  };
+
   const handleDragStart = (event) => {
+    console.log(event?.active?.data);
     setActiveDragItemId(event?.active?.id);
     setActiveDragItemType(
       event?.active?.data?.columnId
@@ -54,7 +62,85 @@ const BoardContent = ({ board }) => {
     setActiveDragItemData(event?.active?.data?.current);
   };
 
+  // Trigger khi kéo 1 phần tử
+  const handleDragOver = (event) => {
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) return;
+    const { active, over } = event;
+    if (!over || !active) return;
+
+    const {
+      id: activeDraggingCardId,
+      data: { current: activeDraggingCardData },
+    } = active;
+    const { id: overCardId } = over;
+
+    // tìm các column theo cardId
+    const activeColumn = findColumnByCardId(activeDraggingCardId);
+    const overColumn = findColumnByCardId(overCardId);
+
+    if (!activeColumn || !overColumn) return;
+
+    if (activeColumn._id !== overColumn._id) {
+      setOrderedColumns((prevColumns) => {
+        const overCardIndex = overColumn?.cards?.findIndex(
+          (card) => card._id === overCardId
+        );
+
+        let newCardIndex;
+        const isBelowOverItem =
+          active.rect.current.translated &&
+          active.rect.current.translated.top > over.rect.top + over.rect.height;
+        const modifier = isBelowOverItem ? 1 : 0;
+        newCardIndex =
+          overCardIndex >= 0
+            ? overCardIndex + modifier
+            : overColumn?.cards?.length + 1;
+
+        const nextColumns = cloneDeep(prevColumns);
+
+        const nextActiveColumn = nextColumns.find(
+          (column) => column.id === activeColumn._id
+        );
+        const nextOverColumn = nextColumns.find(
+          (column) => column.id === overColumn._id
+        );
+
+        if (nextActiveColumn) {
+          nextActiveColumn.cards = nextActiveColumn.cards.filter(
+            (card) => card._id !== activeDraggingCardId
+          );
+
+          nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(
+            (card) => card._id
+          );
+        }
+
+        if (nextOverColumn) {
+          nextOverColumn.cards = nextOverColumn.cards.filter(
+            (card) => card._id !== activeDraggingCardId
+          );
+
+          nextOverColumn.cards = nextOverColumn.cards.toSpliced(
+            newCardIndex,
+            0,
+            activeDraggingCardData
+          );
+
+          nextOverColumn.cardOrderIds = nextOverColumn.cards.map(
+            (card) => card._id
+          );
+        }
+
+        return nextColumns;
+      });
+    }
+  };
+
   const handleDragEnd = (event) => {
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
+      return;
+    }
+
     const { active, over } = event;
     if (!over) return;
     if (active.id !== over.id) {
@@ -74,7 +160,7 @@ const BoardContent = ({ board }) => {
     setActiveDragItemData(null);
   };
 
-  const dropAnimation = {
+  const customDropAnimation = {
     sideEffect: defaultDropAnimationSideEffects({
       styles: { active: { opacity: "0.5" } },
     }),
@@ -82,6 +168,7 @@ const BoardContent = ({ board }) => {
   return (
     <DndContext
       onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
       sensors={sensors}
     >
@@ -95,16 +182,13 @@ const BoardContent = ({ board }) => {
         }}
       >
         <ListColumns columns={orderedColumns} />
-        <DragOverlay dropAnimation={dropAnimation} adjustScale={false}>
-          {!activeDragItemType && undefined}
-          {activeDragItemType &&
-            activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (
-              <Column column={activeDragItemData} />
-            )}
-          {activeDragItemType &&
-            activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
-              <Card card={activeDragItemData} />
-            )}
+        <DragOverlay dropAnimation={customDropAnimation}>
+          {!activeDragItemType && null}
+          {activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN ? (
+            <Column column={activeDragItemData} />
+          ) : (
+            <Card card={activeDragItemData} />
+          )}
         </DragOverlay>
       </Box>
     </DndContext>
