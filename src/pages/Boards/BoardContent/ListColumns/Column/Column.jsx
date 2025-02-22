@@ -138,7 +138,9 @@ const Column = ({ column }) => {
             </Menu>
           </Box>
         </Box>
-        <ListCards cards={orderedCards} />
+        <Box sx={{ minHeight: "10px" }}>
+          <ListCards cards={orderedCards} />
+        </Box>
         <Box
           sx={{
             height: (theme) => theme.trello.columnFooterHeight,
