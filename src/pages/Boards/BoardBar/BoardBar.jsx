@@ -36,7 +36,7 @@ const BoardBar = ({ board }) => {
             },
           }}
         >
-          {board.title}
+          {board?.title}
         </Button>
         <Button
           startIcon={<PublicIcon />}
@@ -46,7 +46,7 @@ const BoardBar = ({ board }) => {
             },
           }}
         >
-          {capitalizeFirstLetter(board.type)}
+          {capitalizeFirstLetter(board?.type)}
         </Button>
         <Button
           startIcon={<AddToDriveIcon />}
