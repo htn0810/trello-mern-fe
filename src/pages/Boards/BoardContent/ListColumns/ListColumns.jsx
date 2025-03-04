@@ -8,20 +8,24 @@ import {
 } from "@dnd-kit/sortable";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { createNewColumnAPI } from "@/apis";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectCurrentActiveBoard,
+  updateCurrentActiveBoard,
+} from "@/redux/activeBoard/activeBoardSlice";
+import { cloneDeep } from "lodash";
 
-const ListColumns = ({
-  columns,
-  createNewColumn,
-  createNewCard,
-  deleteColumn,
-}) => {
+const ListColumns = ({ columns }) => {
+  const dispatch = useDispatch();
+  const board = useSelector(selectCurrentActiveBoard);
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState("");
 
   const toggleOpenNewColumnForm = () =>
     setOpenNewColumnForm(!openNewColumnForm);
 
-  const addNewColumn = () => {
+  const addNewColumn = async () => {
     if (!newColumnTitle) {
       toast.error("Please enter column title");
       return;
@@ -32,7 +36,16 @@ const ListColumns = ({
       boardId: "",
     };
 
-    createNewColumn(newColumnData);
+    const createdColumn = await createNewColumnAPI({
+      ...newColumnData,
+      boardId: board._id,
+    });
+
+    // update state board
+    const newBoard = cloneDeep(board);
+    newBoard.columns.push(createdColumn);
+    newBoard.columnOrderIds.push(createdColumn._id);
+    dispatch(updateCurrentActiveBoard(newBoard));
 
     toggleOpenNewColumnForm();
     setNewColumnTitle("");
@@ -57,12 +70,7 @@ const ListColumns = ({
         }}
       >
         {columns?.map((column) => (
-          <Column
-            column={column}
-            key={column._id}
-            createNewCard={createNewCard}
-            deleteColumn={deleteColumn}
-          />
+          <Column column={column} key={column._id} />
         ))}
 
         {!openNewColumnForm ? (

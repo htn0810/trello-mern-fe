@@ -24,8 +24,17 @@ import { CSS } from "@dnd-kit/utilities";
 import { toast } from "react-toastify";
 
 import { useConfirm } from "material-ui-confirm";
+import { createNewCardAPI, deleteColumnAPI } from "@/apis";
+import { cloneDeep } from "lodash";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectCurrentActiveBoard,
+  updateCurrentActiveBoard,
+} from "@/redux/activeBoard/activeBoardSlice";
 
-const Column = ({ column, createNewCard, deleteColumn }) => {
+const Column = ({ column }) => {
+  const dispatch = useDispatch();
+  const board = useSelector(selectCurrentActiveBoard);
   const confirmDeleteColumn = useConfirm();
   const {
     attributes,
@@ -58,7 +67,7 @@ const Column = ({ column, createNewCard, deleteColumn }) => {
 
   const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm);
 
-  const addNewCard = () => {
+  const addNewCard = async () => {
     if (!newCardTitle) {
       toast.error("Please enter card title");
       return;
@@ -67,7 +76,22 @@ const Column = ({ column, createNewCard, deleteColumn }) => {
       title: newCardTitle,
       columnId: column._id,
     };
-    createNewCard(newCardData);
+
+    const createdCard = await createNewCardAPI({
+      ...newCardData,
+      boardId: board._id,
+    });
+
+    // update state board
+    const newBoard = cloneDeep(board);
+    const updatedColumn = newBoard.columns.find(
+      (col) => col._id === createdCard.columnId
+    );
+    if (updatedColumn) {
+      updatedColumn.cards.push(createdCard);
+      updatedColumn.cardOrderIds.push(createdCard._id);
+    }
+    dispatch(updateCurrentActiveBoard(newBoard));
 
     toggleOpenNewCardForm();
     setNewCardTitle("");
@@ -79,8 +103,18 @@ const Column = ({ column, createNewCard, deleteColumn }) => {
     });
 
     if (confirmed) {
-      console.log("🚀 ~ handleDeleteColumn ~ column:", column);
-      deleteColumn(column._id);
+      const newBoard = { ...board };
+      newBoard.columnOrderIds = newBoard.columnOrderIds.filter(
+        (colId) => colId !== column._id
+      );
+      newBoard.columns = newBoard.columns.filter(
+        (col) => col._id !== column._id
+      );
+      deleteColumnAPI(board._id, column._id).then((res) => {
+        toast.success("Delete column successfully!");
+      });
+
+      dispatch(updateCurrentActiveBoard(newBoard));
     }
   };
 

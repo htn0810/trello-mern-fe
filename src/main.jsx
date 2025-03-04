@@ -9,16 +9,20 @@ import { ConfirmProvider } from "material-ui-confirm";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Provider } from "react-redux";
+import { store } from "@/redux/store.js";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ThemeProvider theme={theme}>
-      <InitColorSchemeScript attribute="class" />
-      <ConfirmProvider>
-        <CssBaseline />
-        <App />
-        <ToastContainer theme="colored" />
-      </ConfirmProvider>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <InitColorSchemeScript attribute="class" />
+        <ConfirmProvider>
+          <CssBaseline />
+          <App />
+          <ToastContainer theme="colored" />
+        </ConfirmProvider>
+      </ThemeProvider>
+    </Provider>
   </StrictMode>
 );
