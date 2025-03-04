@@ -2201,6 +2201,11 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
+material-ui-confirm@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/material-ui-confirm/-/material-ui-confirm-4.0.0.tgz#06e2cb71164f43762ded5b39656eeb342a0edf82"
+  integrity sha512-Wtt7XWythYtawPTfq8V/eYGvJ7jqwCQGmEnmpevJicaJ3PUoDcLh/b/m7aV6yNdrWwjQjB2r/RvTWQAC6y0tKw==
+
 math-intrinsics@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/math-intrinsics/-/math-intrinsics-1.1.0.tgz#a0dd74be81e2aa5c2f27e65ce283605ee4e2b7f9"
@@ -2445,6 +2450,13 @@ react-is@^19.0.0:
   version "19.0.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-19.0.0.tgz#d6669fd389ff022a9684f708cf6fa4962d1fea7a"
   integrity sha512-H91OHcwjZsbq3ClIDHMzBShc1rotbfACdWENsmEf0IFvZ3FgGPtdHMcsv45bQ1hAbgdfiA8SnxTKfDS+x/8m2g==
+
+react-toastify@^11.0.5:
+  version "11.0.5"
+  resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-11.0.5.tgz#ce4c42d10eeb433988ab2264d3e445c4e9d13313"
+  integrity sha512-EpqHBGvnSTtHYhCPLxML05NLY2ZX0JURbAdNYa6BUkk+amz4wbKBQvoKQAB0ardvSarUBuY4Q4s1sluAzZwkmA==
+  dependencies:
+    clsx "^2.1.1"
 
 react-transition-group@^4.4.5:
   version "4.4.5"
