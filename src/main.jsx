@@ -11,18 +11,21 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Provider } from "react-redux";
 import { store } from "@/redux/store.js";
+import { BrowserRouter } from "react-router-dom";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <InitColorSchemeScript attribute="class" />
-        <ConfirmProvider>
-          <CssBaseline />
-          <App />
-          <ToastContainer theme="colored" />
-        </ConfirmProvider>
-      </ThemeProvider>
-    </Provider>
+    <BrowserRouter basename="/">
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <InitColorSchemeScript attribute="class" />
+          <ConfirmProvider>
+            <CssBaseline />
+            <App />
+            <ToastContainer theme="colored" />
+          </ConfirmProvider>
+        </ThemeProvider>
+      </Provider>
+    </BrowserRouter>
   </StrictMode>
 );

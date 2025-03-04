@@ -4,14 +4,10 @@ import AppBar from "@/components/AppBar/AppBar";
 import BoardBar from "@/pages/Boards/BoardBar/BoardBar";
 import BoardContent from "@/pages/Boards/BoardContent/BoardContent";
 import {
-  createNewCardAPI,
-  createNewColumnAPI,
-  deleteColumnAPI,
   moveCardToDifferentColumnsAPI,
   updateBoardDetailsAPI,
   updateColumnDetailsAPI,
 } from "@/apis";
-import { toast } from "react-toastify";
 import {
   fetchBoardDetailsAPI,
   updateCurrentActiveBoard,
@@ -19,15 +15,18 @@ import {
 } from "@/redux/activeBoard/activeBoardSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { cloneDeep } from "lodash";
+import { useParams } from "react-router-dom";
 
 const Board = () => {
   const dispatch = useDispatch();
   const board = useSelector(selectCurrentActiveBoard);
+
+  const { boardId } = useParams();
   useEffect(() => {
-    const boardId = "67bde4fb91ce8893ccc23f55";
+    // const boardId = "67bde4fb91ce8893ccc23f55";
 
     dispatch(fetchBoardDetailsAPI(boardId));
-  }, [dispatch]);
+  }, [dispatch, boardId]);
   const moveColumn = (dndOrderedColumns) => {
     const dndOrderedColumnIds = dndOrderedColumns.map((c) => c._id);
 
