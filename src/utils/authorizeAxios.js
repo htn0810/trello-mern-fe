@@ -5,13 +5,9 @@ import { toast } from "react-toastify";
 // init an custom axios instance to use in project
 let authorizeAxiosInstance = axios.create({
   baseURL: "http://localhost:8017",
+  withCredentials: true,
+  timeout: 1000 * 60 * 10,
 });
-
-// time-out of 1 request: 10 mins
-authorizeAxiosInstance.defaults.timeout = 1000 * 60 * 10;
-
-// allow axios auto send cookie with each request send to server (use for jwt)
-// authorizeAxiosInstance.defaults.withCredentials = true;
 
 authorizeAxiosInstance.interceptors.request.use(
   (config) => {

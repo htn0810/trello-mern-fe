@@ -12,19 +12,25 @@ import "react-toastify/dist/ReactToastify.css";
 import { Provider } from "react-redux";
 import { store } from "@/redux/store.js";
 import { BrowserRouter } from "react-router-dom";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+
+const persistor = persistStore(store);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter basename="/">
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <InitColorSchemeScript attribute="class" />
-          <ConfirmProvider>
-            <CssBaseline />
-            <App />
-            <ToastContainer theme="colored" />
-          </ConfirmProvider>
-        </ThemeProvider>
+        <PersistGate persistor={persistor}>
+          <ThemeProvider theme={theme}>
+            <InitColorSchemeScript attribute="class" />
+            <ConfirmProvider>
+              <CssBaseline />
+              <App />
+              <ToastContainer theme="colored" />
+            </ConfirmProvider>
+          </ThemeProvider>
+        </PersistGate>
       </Provider>
     </BrowserRouter>
   </StrictMode>
