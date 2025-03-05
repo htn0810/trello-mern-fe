@@ -5,7 +5,7 @@ import BoltIcon from "@mui/icons-material/Bolt";
 import AddToDriveIcon from "@mui/icons-material/AddToDrive";
 import PublicIcon from "@mui/icons-material/Public";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { capitalizeFirstLetter } from "@/utils/formatter";
+import { capitalizeFirstLetter } from "@/utils/formatters";
 
 const BoardBar = ({ board }) => {
   return (

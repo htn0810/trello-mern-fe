@@ -283,6 +283,7 @@ const Column = ({ column }) => {
                 data-no-dnd
               >
                 <Button
+                  className="interceptor-loading"
                   variant="contained"
                   size="small"
                   onClick={addNewCard}

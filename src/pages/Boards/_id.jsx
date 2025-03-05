@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Box, CircularProgress, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import AppBar from "@/components/AppBar/AppBar";
 import BoardBar from "@/pages/Boards/BoardBar/BoardBar";
 import BoardContent from "@/pages/Boards/BoardContent/BoardContent";
@@ -16,6 +16,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { cloneDeep } from "lodash";
 import { useParams } from "react-router-dom";
+import LoadingSpinner from "@/components/Loading/LoadingSpinner";
 
 const Board = () => {
   const dispatch = useDispatch();
@@ -79,19 +80,7 @@ const Board = () => {
   };
 
   if (!board) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100vw",
-          height: "100vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <LoadingSpinner />;
   }
 
   return (
