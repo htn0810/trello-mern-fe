@@ -20,6 +20,8 @@ import randomColor from "randomcolor";
 import SidebarCreateBoardModal from "./create";
 
 import { styled } from "@mui/material/styles";
+import { fetchBoardsAPI } from "@/apis";
+import { DEFAULT_ITEMS_PER_PAGE, DEFAULT_PAGE } from "@/utils/constants";
 // Styles của mấy cái Sidebar item menu, anh gom lại ra đây cho gọn.
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -48,12 +50,11 @@ function Boards() {
   const page = parseInt(query.get("page") || "1", 10);
 
   useEffect(() => {
-    setBoards([...Array(16)].map((_, i) => i));
-    setTotalBoards(100);
-
-    // Gọi API lấy danh sách boards ở đây...
-    // ...
-  }, []);
+    fetchBoardsAPI(location.search).then((res) => {
+      setBoards(res.boards || []);
+      setTotalBoards(res.totalBoards || 0);
+    });
+  }, [location.search]);
 
   if (!boards) {
     return <PageLoadingSpinner caption="Loading Boards..." />;
@@ -98,7 +99,7 @@ function Boards() {
             {boards?.length > 0 && (
               <Grid container spacing={2}>
                 {boards.map((b) => (
-                  <Grid size={{ xs: 2, sm: 3, md: 4 }} key={b}>
+                  <Grid size={{ xs: 2, sm: 3, md: 4 }} key={b?._id}>
                     <Card sx={{ width: "250px" }}>
                       <Box
                         sx={{ height: "50px", backgroundColor: randomColor() }}
@@ -106,7 +107,7 @@ function Boards() {
 
                       <CardContent sx={{ p: 1.5, "&:last-child": { p: 1.5 } }}>
                         <Typography gutterBottom variant="h6" component="div">
-                          Board title
+                          {b?.title}
                         </Typography>
                         <Typography
                           variant="body2"
@@ -117,13 +118,11 @@ function Boards() {
                             textOverflow: "ellipsis",
                           }}
                         >
-                          This impressive paella is a perfect party dish and a
-                          fun meal to cook together with your guests. Add 1 cup
-                          of frozen peas along with the mussels, if you like.
+                          {b?.description}
                         </Typography>
                         <Box
                           component={Link}
-                          to={"/boards/6534e1b8a235025a66b644a5"}
+                          to={`/boards/${b?._id}`}
                           sx={{
                             mt: 1,
                             display: "flex",
@@ -157,13 +156,13 @@ function Boards() {
                   color="secondary"
                   showFirstButton
                   showLastButton
-                  count={Math.ceil(totalBoards / 12)}
+                  count={Math.ceil(totalBoards / DEFAULT_ITEMS_PER_PAGE)}
                   page={page}
                   renderItem={(item) => (
                     <PaginationItem
                       component={Link}
                       to={`/boards${
-                        item.page === 1 ? "" : `?page=${item.page}`
+                        item.page === DEFAULT_PAGE ? "" : `?page=${item.page}`
                       }`}
                       {...item}
                     />

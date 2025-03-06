@@ -17,10 +17,7 @@ function App() {
   const currentUser = useSelector(selectCurrentUser);
   return (
     <Routes>
-      <Route
-        path="/"
-        element={<Navigate to="/boards/67bde4fb91ce8893ccc23f55" replace />}
-      />
+      <Route path="/" element={<Navigate to="/boards" replace />} />
       <Route element={<ProtectedRoute user={currentUser} />}>
         <Route path="/boards" element={<Boards />} />
         <Route path="/boards/:boardId" element={<Board />} />
