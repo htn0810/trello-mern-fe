@@ -17,6 +17,10 @@ import { PersistGate } from "redux-persist/integration/react";
 
 const persistor = persistStore(store);
 
+// Inject store to use redux store in none react components
+import { injectStore } from "@/utils/authorizeAxios";
+injectStore(store);
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter basename="/">
