@@ -17,6 +17,7 @@ import Recent from "@/components/AppBar/Menus/Recent";
 import Started from "@/components/AppBar/Menus/Started";
 import Templates from "@/components/AppBar/Menus/Templates";
 import Profiles from "@/components/AppBar/Menus/Profiles";
+import { Link } from "react-router-dom";
 
 const AppBar = () => {
   return (
@@ -32,24 +33,28 @@ const AppBar = () => {
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-        <AppsIcon sx={{ color: "primary.main" }} />
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-          <SvgIcon
-            component={TrelloIcon}
-            fontSize="small"
-            sx={{ color: "primary.main" }}
-          />
-          <Typography
-            variant="span"
-            sx={{
-              fontSize: "1.2rem",
-              fontWeight: "bold",
-              color: "primary.main",
-            }}
-          >
-            Trello
-          </Typography>
-        </Box>
+        <Link to="/boards">
+          <AppsIcon sx={{ color: "primary.main", verticalAlign: "middle" }} />
+        </Link>
+        <Link to={"/"}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+            <SvgIcon
+              component={TrelloIcon}
+              fontSize="small"
+              sx={{ color: "primary.main" }}
+            />
+            <Typography
+              variant="span"
+              sx={{
+                fontSize: "1.2rem",
+                fontWeight: "bold",
+                color: "primary.main",
+              }}
+            >
+              Trello
+            </Typography>
+          </Box>
+        </Link>
         <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
           <Workspaces />
           <Recent />

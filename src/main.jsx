@@ -19,6 +19,7 @@ const persistor = persistStore(store);
 
 // Inject store to use redux store in none react components
 import { injectStore } from "@/utils/authorizeAxios";
+import { GlobalStyles } from "@mui/material";
 injectStore(store);
 
 createRoot(document.getElementById("root")).render(
@@ -29,6 +30,7 @@ createRoot(document.getElementById("root")).render(
           <ThemeProvider theme={theme}>
             <InitColorSchemeScript attribute="class" />
             <ConfirmProvider>
+              <GlobalStyles styles={{ a: { textDecoration: "none" } }} />
               <CssBaseline />
               <App />
               <ToastContainer theme="colored" />

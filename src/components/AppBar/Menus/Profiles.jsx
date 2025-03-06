@@ -13,6 +13,7 @@ import {
 import { useConfirm } from "material-ui-confirm";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Profiles = () => {
   const dispatch = useDispatch();
@@ -68,15 +69,17 @@ const Profiles = () => {
           "aria-labelledby": "basic-button-profiles",
         }}
       >
-        <MenuItem
-          sx={{ "&:hover": { color: (theme) => theme.palette.primary.main } }}
-        >
-          <Avatar
-            sx={{ width: 28, height: 28, mr: 2 }}
-            src={currentUser?.avatar}
-          />
-          Profile
-        </MenuItem>
+        <Link to="/settings/account">
+          <MenuItem
+            sx={{ "&:hover": { color: (theme) => theme.palette.primary.main } }}
+          >
+            <Avatar
+              sx={{ width: 28, height: 28, mr: 2 }}
+              src={currentUser?.avatar}
+            />
+            Profile
+          </MenuItem>
+        </Link>
         <Divider />
         <MenuItem>
           <ListItemIcon>

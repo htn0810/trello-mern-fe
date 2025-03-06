@@ -42,7 +42,6 @@ function LoginForm() {
         pending: "Logging in...",
       })
       .then((res) => {
-        console.log("🚀 ~ .then ~ res:", res);
         if (!res.error) navigate("/");
         // navigate(`/login?registeredEmail=${user.email}`);
       });
