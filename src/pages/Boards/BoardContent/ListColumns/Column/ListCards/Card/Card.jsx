@@ -11,8 +11,12 @@ import ChatIcon from "@mui/icons-material/Chat";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useDispatch } from "react-redux";
+import { updateCurrentActiveCard } from "@/redux/activeCard/activeCardSlice";
 
 const Card = ({ card }) => {
+  const dispatch = useDispatch();
+
   const {
     attributes,
     listeners,
@@ -36,8 +40,13 @@ const Card = ({ card }) => {
       !!card?.attachments?.length
     );
   };
+
+  const setActiveCard = () => {
+    dispatch(updateCurrentActiveCard(card));
+  };
   return (
     <MuiCard
+      onClick={setActiveCard}
       ref={setNodeRef}
       style={dndKitCardStyle}
       {...attributes}

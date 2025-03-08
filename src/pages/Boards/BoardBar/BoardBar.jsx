@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup, Box, Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import WidgetsIcon from "@mui/icons-material/Widgets";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import BoltIcon from "@mui/icons-material/Bolt";
@@ -6,6 +6,7 @@ import AddToDriveIcon from "@mui/icons-material/AddToDrive";
 import PublicIcon from "@mui/icons-material/Public";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { capitalizeFirstLetter } from "@/utils/formatters";
+import BoardUserGroup from "@/pages/Boards/BoardBar/BoardUserGroup";
 
 const BoardBar = ({ board }) => {
   return (
@@ -89,18 +90,7 @@ const BoardBar = ({ board }) => {
         <Button variant="outlined" startIcon={<PersonAddIcon />}>
           Invite
         </Button>
-        <AvatarGroup
-          max={4}
-          sx={{
-            "& .MuiAvatar-root": { width: 34, height: 34, cursor: "pointer" },
-          }}
-        >
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-          <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-          <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-          <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
-          <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
-        </AvatarGroup>
+        <BoardUserGroup boardUsers={board?.FE_allUsers} />
       </Box>
     </Box>
   );

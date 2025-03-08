@@ -8,6 +8,21 @@ import { toast } from "react-toastify";
 //   return response.data;
 // };
 
+export const fetchBoardsAPI = async (searchPath) => {
+  const response = await authorizeAxiosInstance.get(
+    `${API_ROOT}/v1/boards${searchPath}`
+  );
+  return response.data;
+};
+
+export const createNewBoardAPI = async (data) => {
+  const response = await authorizeAxiosInstance.post(
+    `${API_ROOT}/v1/boards`,
+    data
+  );
+  return response.data;
+};
+
 export const updateBoardDetailsAPI = async (boardId, updateData) => {
   const response = await authorizeAxiosInstance.put(
     `${API_ROOT}/v1/boards/${boardId}`,
@@ -57,6 +72,14 @@ export const createNewCardAPI = async (newCardData) => {
   return response.data;
 };
 
+export const updateCardDetailsAPI = async (cardId, updateData) => {
+  const response = await authorizeAxiosInstance.put(
+    `${API_ROOT}/v1/cards/${cardId}`,
+    updateData
+  );
+  return response.data;
+};
+
 // Users
 export const registerUserAPI = async (data) => {
   const response = await authorizeAxiosInstance.post(
@@ -85,13 +108,6 @@ export const verifyUserAPI = async (data) => {
 export const refreshTokenAPI = async () => {
   const response = await authorizeAxiosInstance.get(
     `${API_ROOT}/v1/users/refresh_token`
-  );
-  return response.data;
-};
-
-export const fetchBoardsAPI = async (searchPath) => {
-  const response = await authorizeAxiosInstance.get(
-    `${API_ROOT}/v1/boards${searchPath}`
   );
   return response.data;
 };

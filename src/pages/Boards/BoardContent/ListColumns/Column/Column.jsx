@@ -5,7 +5,6 @@ import {
   ListItemText,
   TextField,
   Tooltip,
-  Typography,
 } from "@mui/material";
 import { Button, Menu, MenuItem } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -24,13 +23,18 @@ import { CSS } from "@dnd-kit/utilities";
 import { toast } from "react-toastify";
 
 import { useConfirm } from "material-ui-confirm";
-import { createNewCardAPI, deleteColumnAPI } from "@/apis";
+import {
+  createNewCardAPI,
+  deleteColumnAPI,
+  updateColumnDetailsAPI,
+} from "@/apis";
 import { cloneDeep } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCurrentActiveBoard,
   updateCurrentActiveBoard,
 } from "@/redux/activeBoard/activeBoardSlice";
+import ToggleFocusInput from "@/components/Form/ToggleFocusInput";
 
 const Column = ({ column }) => {
   const dispatch = useDispatch();
@@ -118,6 +122,19 @@ const Column = ({ column }) => {
     }
   };
 
+  const onUpdateColumnTitle = (newTitle) => {
+    updateColumnDetailsAPI(column._id, { title: newTitle }).then((res) => {
+      const newBoard = { ...board };
+      const updatedColumn = newBoard.columns.find(
+        (col) => col._id === column._id
+      );
+      if (updatedColumn) {
+        updatedColumn.title = newTitle;
+      }
+      dispatch(updateCurrentActiveBoard(newBoard));
+    });
+  };
+
   const orderedCards = column?.cards;
   return (
     <div ref={setNodeRef} style={dndKitColumnStyle} {...attributes}>
@@ -143,12 +160,11 @@ const Column = ({ column }) => {
             justifyContent: "space-between",
           }}
         >
-          <Typography
-            variant="h6"
-            sx={{ fontWeight: "bold", cursor: "pointer", fontSize: "1rem" }}
-          >
-            {column?.title}
-          </Typography>
+          <ToggleFocusInput
+            value={column?.title}
+            onChangedValue={onUpdateColumnTitle}
+            data-no-dnd
+          ></ToggleFocusInput>
           <Box>
             <Tooltip title="More Options">
               <ExpandMoreIcon

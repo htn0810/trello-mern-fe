@@ -17,6 +17,9 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 import { styled } from "@mui/material/styles";
+import { create } from "lodash";
+import { createNewBoardAPI } from "@/apis";
+import { toast } from "react-toastify";
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -40,7 +43,7 @@ const BOARD_TYPES = {
   PRIVATE: "private",
 };
 
-function SidebarCreateBoardModal() {
+function SidebarCreateBoardModal({ afterCreateNewBoard }) {
   const {
     control,
     register,
@@ -57,10 +60,11 @@ function SidebarCreateBoardModal() {
   };
 
   const submitCreateNewBoard = (data) => {
-    const { title, description, type } = data;
-    console.log("Board title: ", title);
-    console.log("Board description: ", description);
-    console.log("Board type: ", type);
+    createNewBoardAPI(data).then(() => {
+      handleCloseModal();
+      afterCreateNewBoard();
+      toast.success("Create new board successfully!");
+    });
   };
 
   return (
