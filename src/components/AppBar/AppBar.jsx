@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import AppsIcon from "@mui/icons-material/Apps";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import TrelloIcon from "@/assets/trello.svg?react";
 import Workspaces from "@/components/AppBar/Menus/Workspaces";
@@ -18,6 +17,8 @@ import Started from "@/components/AppBar/Menus/Started";
 import Templates from "@/components/AppBar/Menus/Templates";
 import Profiles from "@/components/AppBar/Menus/Profiles";
 import { Link } from "react-router-dom";
+import Notifications from "@/components/AppBar/Notifications/Notifications";
+import AutoCompleteSearchBoard from "@/components/AppBar/SearchBoards/AutoCompleteSearchBoard";
 
 const AppBar = () => {
   return (
@@ -64,20 +65,11 @@ const AppBar = () => {
         </Box>
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-        <TextField
-          id="outlined-search"
-          label="Search..."
-          type="search"
-          size="small"
-          sx={{ minWidth: 120 }}
-        />
+        <AutoCompleteSearchBoard />
+        {/*  Dark light system mode */}
         <ModeSelect />
-
-        <Tooltip title="Notification">
-          <Badge color="secondary" variant="dot" sx={{ cursor: "pointer" }}>
-            <NotificationsNoneIcon sx={{ color: "primary.main" }} />
-          </Badge>
-        </Tooltip>
+        {/* Notification bell icon */}
+        <Notifications />
         <Tooltip title="Help">
           <HelpOutlineIcon sx={{ cursor: "pointer", color: "primary.main" }} />
         </Tooltip>

@@ -23,21 +23,21 @@ import { GlobalStyles } from "@mui/material";
 injectStore(store);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <BrowserRouter basename="/">
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <ThemeProvider theme={theme}>
-            <InitColorSchemeScript attribute="class" />
-            <ConfirmProvider>
-              <GlobalStyles styles={{ a: { textDecoration: "none" } }} />
-              <CssBaseline />
-              <App />
-              <ToastContainer theme="colored" />
-            </ConfirmProvider>
-          </ThemeProvider>
-        </PersistGate>
-      </Provider>
-    </BrowserRouter>
-  </StrictMode>
+  // <StrictMode>
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <BrowserRouter basename="/">
+        <ThemeProvider theme={theme}>
+          <InitColorSchemeScript attribute="class" />
+          <ConfirmProvider>
+            <GlobalStyles styles={{ a: { textDecoration: "none" } }} />
+            <CssBaseline />
+            <App />
+            <ToastContainer theme="colored" />
+          </ConfirmProvider>
+        </ThemeProvider>
+      </BrowserRouter>
+    </PersistGate>
+  </Provider>
+  // </StrictMode>
 );

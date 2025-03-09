@@ -6,8 +6,13 @@ import Popover from "@mui/material/Popover";
 import AddIcon from "@mui/icons-material/Add";
 import Badge from "@mui/material/Badge";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { useSelector } from "react-redux";
+import { selectCurrentActiveBoard } from "@/redux/activeBoard/activeBoardSlice";
+import { CARD_MEMBER_ACTIONS } from "@/utils/constants";
 
-function CardUserGroup({ cardMemberIds = [] }) {
+function CardUserGroup({ cardMemberIds = [], onUpdateCardMembers }) {
+  const board = useSelector(selectCurrentActiveBoard);
+
   const [anchorPopoverElement, setAnchorPopoverElement] = useState(null);
   const isOpenPopover = Boolean(anchorPopoverElement);
   const popoverId = isOpenPopover ? "card-all-users-popover" : undefined;
@@ -16,14 +21,28 @@ function CardUserGroup({ cardMemberIds = [] }) {
     else setAnchorPopoverElement(null);
   };
 
+  const FE_cardMembers = cardMemberIds.map((id) =>
+    board.FE_allUsers?.find((user) => user._id === id)
+  );
+
+  const handleUpdateCardMembers = (user) => {
+    const inCommingUserInfo = {
+      userId: user._id,
+      action: cardMemberIds.includes(user._id)
+        ? CARD_MEMBER_ACTIONS.REMOVE
+        : CARD_MEMBER_ACTIONS.ADD,
+    };
+    onUpdateCardMembers(inCommingUserInfo);
+  };
+
   return (
     <Box sx={{ display: "flex", gap: "4px", flexWrap: "wrap" }}>
-      {[...Array(8)].map((_, index) => (
-        <Tooltip title="trungquandev" key={index}>
+      {FE_cardMembers?.map((user, index) => (
+        <Tooltip title={user?.displayName} key={index}>
           <Avatar
             sx={{ width: 34, height: 34, cursor: "pointer" }}
-            alt="trungquandev"
-            src="https://trungquandev.com/wp-content/uploads/2019/06/trungquandev-cat-avatar.png"
+            alt={user?.displayName}
+            src={user?.avatar}
           />
         </Tooltip>
       ))}
@@ -76,20 +95,26 @@ function CardUserGroup({ cardMemberIds = [] }) {
             gap: 1.5,
           }}
         >
-          {[...Array(16)].map((_, index) => (
-            <Tooltip title="trungquandev" key={index}>
+          {board.FE_allUsers?.map((user, index) => (
+            <Tooltip title={user?.displayName} key={index}>
               <Badge
                 sx={{ cursor: "pointer" }}
                 overlap="rectangular"
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                 badgeContent={
-                  <CheckCircleIcon fontSize="small" sx={{ color: "#27ae60" }} />
+                  cardMemberIds.includes(user._id) && (
+                    <CheckCircleIcon
+                      fontSize="small"
+                      sx={{ color: "#27ae60" }}
+                    />
+                  )
                 }
+                onClick={() => handleUpdateCardMembers(user)}
               >
                 <Avatar
                   sx={{ width: 34, height: 34 }}
-                  alt="trungquandev"
-                  src="https://trungquandev.com/wp-content/uploads/2019/06/trungquandev-cat-avatar.png"
+                  alt={user?.displayName}
+                  src={user?.avatar}
                 />
               </Badge>
             </Tooltip>

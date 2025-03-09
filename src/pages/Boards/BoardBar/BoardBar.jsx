@@ -4,9 +4,9 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import BoltIcon from "@mui/icons-material/Bolt";
 import AddToDriveIcon from "@mui/icons-material/AddToDrive";
 import PublicIcon from "@mui/icons-material/Public";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { capitalizeFirstLetter } from "@/utils/formatters";
 import BoardUserGroup from "@/pages/Boards/BoardBar/BoardUserGroup";
+import InviteBoardUser from "@/pages/Boards/BoardBar/InviteBoardUser";
 
 const BoardBar = ({ board }) => {
   return (
@@ -87,9 +87,7 @@ const BoardBar = ({ board }) => {
           gap: 1,
         }}
       >
-        <Button variant="outlined" startIcon={<PersonAddIcon />}>
-          Invite
-        </Button>
+        <InviteBoardUser boardId={board._id} />
         <BoardUserGroup boardUsers={board?.FE_allUsers} />
       </Box>
     </Box>

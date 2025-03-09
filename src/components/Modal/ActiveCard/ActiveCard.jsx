@@ -36,11 +36,15 @@ import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearCurrentActiveCard,
+  hideModalCard,
   selectCurrentActiveCard,
+  selectIsShowCardModal,
   updateCurrentActiveCard,
 } from "@/redux/activeCard/activeCardSlice";
 import { updateCardDetailsAPI } from "@/apis";
 import { updateCardInBoard } from "@/redux/activeBoard/activeBoardSlice";
+import { selectCurrentUser } from "@/redux/user/userSlice";
+import { CARD_MEMBER_ACTIONS } from "@/utils/constants";
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -64,13 +68,15 @@ const SidebarItem = styled(Box)(({ theme }) => ({
 
 function ActiveCard() {
   const dispatch = useDispatch();
+  const currentUser = useSelector(selectCurrentUser);
   const activeCard = useSelector(selectCurrentActiveCard);
+  const isShowCardModal = useSelector(selectIsShowCardModal);
   const handleCloseModal = () => {
     dispatch(clearCurrentActiveCard());
+    dispatch(hideModalCard());
   };
 
   const callApiUpdateCard = async (updateData) => {
-    console.log("🚀 ~ callApiUpdateCard ~ updateData:", updateData);
     const updatedCard = await updateCardDetailsAPI(activeCard._id, updateData);
 
     dispatch(updateCurrentActiveCard(updatedCard));
@@ -85,7 +91,6 @@ function ActiveCard() {
   };
 
   const onUploadCardCover = (event) => {
-    console.log(event.target?.files[0]);
     const error = singleFileValidator(event.target?.files[0]);
     if (error) {
       toast.error(error);
@@ -93,7 +98,6 @@ function ActiveCard() {
     }
     let reqData = new FormData();
     reqData.append("cardCover", event.target?.files[0]);
-    console.log("🚀 ~ onUploadCardCover ~ reqData:", reqData);
     toast.promise(
       callApiUpdateCard(reqData).finally(() => {
         event.target.value = "";
@@ -105,10 +109,20 @@ function ActiveCard() {
     );
   };
 
+  const onAddCardComment = async (commentToAdd) => {
+    await callApiUpdateCard({ commentToAdd });
+  };
+
+  const onUpdateCardMembers = async (inCommingUserInfo) => {
+    await callApiUpdateCard({
+      inCommingUserInfo,
+    });
+  };
+
   return (
     <Modal
       disableScrollLock
-      open={true}
+      open={isShowCardModal}
       onClose={handleCloseModal}
       sx={{ overflowY: "auto" }}
     >
@@ -168,7 +182,6 @@ function ActiveCard() {
         >
           <CreditCardIcon />
 
-          {/* Feature 01: Xử lý tiêu đề của Card */}
           <ToggleFocusInput
             inputFontSize="22px"
             value={activeCard?.title}
@@ -184,7 +197,10 @@ function ActiveCard() {
                 Members
               </Typography>
 
-              <CardUserGroup />
+              <CardUserGroup
+                cardMemberIds={activeCard?.memberIds}
+                onUpdateCardMembers={onUpdateCardMembers}
+              />
             </Box>
 
             <Box sx={{ mb: 3 }}>
@@ -212,7 +228,10 @@ function ActiveCard() {
                 </Typography>
               </Box>
 
-              <CardActivitySection />
+              <CardActivitySection
+                cardComments={activeCard?.comments}
+                onAddCardComment={onAddCardComment}
+              />
             </Box>
           </Grid>
 
@@ -224,10 +243,20 @@ function ActiveCard() {
               Add To Card
             </Typography>
             <Stack direction="column" spacing={1}>
-              <SidebarItem className="active">
-                <PersonOutlineOutlinedIcon fontSize="small" />
-                Join
-              </SidebarItem>
+              {!activeCard?.memberIds?.includes(currentUser?._id) && (
+                <SidebarItem
+                  className="active"
+                  onClick={() =>
+                    onUpdateCardMembers({
+                      userId: currentUser?._id,
+                      action: CARD_MEMBER_ACTIONS.ADD,
+                    })
+                  }
+                >
+                  <PersonOutlineOutlinedIcon fontSize="small" />
+                  Join
+                </SidebarItem>
+              )}
               <SidebarItem className="active" component="label">
                 <ImageOutlinedIcon fontSize="small" />
                 Cover
