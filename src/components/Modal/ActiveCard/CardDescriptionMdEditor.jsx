@@ -19,10 +19,6 @@ function CardDescriptionMdEditor({ onUpdate }) {
 
   const updateCardDescription = () => {
     setMarkdownEditMode(false);
-    console.log(
-      "🚀 ~ updateCardDescription ~ cardDescription:",
-      cardDescription
-    );
     onUpdate({ description: cardDescription });
   };
 

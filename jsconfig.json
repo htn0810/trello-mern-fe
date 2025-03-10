@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "checkJs": false,
+    "checkJs": true,
     "jsx": "react-jsx", // ✅ Enable JSX support
     "allowJs": true, // ✅ Allow JavaScript files if needed
     "module": "ESNext", // ✅ Ensure modern module support

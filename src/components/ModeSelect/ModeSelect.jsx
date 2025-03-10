@@ -1,4 +1,3 @@
-import React from "react";
 import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
@@ -15,7 +14,6 @@ function ModeSelect() {
   const handleChange = (event) => {
     const selectedValue = event.target.value ?? "light";
     setMode(selectedValue);
-    // For TypeScript, cast `event.target.value as 'light' | 'dark' | 'system'`:
   };
 
   return (

@@ -1,20 +1,10 @@
 import ModeSelect from "@/components/ModeSelect/ModeSelect";
-import {
-  Badge,
-  Box,
-  Button,
-  SvgIcon,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, SvgIcon, Tooltip, Typography } from "@mui/material";
 import AppsIcon from "@mui/icons-material/Apps";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import TrelloIcon from "@/assets/trello.svg?react";
 import Workspaces from "@/components/AppBar/Menus/Workspaces";
 import Recent from "@/components/AppBar/Menus/Recent";
-import Started from "@/components/AppBar/Menus/Started";
-import Templates from "@/components/AppBar/Menus/Templates";
 import Profiles from "@/components/AppBar/Menus/Profiles";
 import { Link } from "react-router-dom";
 import Notifications from "@/components/AppBar/Notifications/Notifications";
@@ -31,6 +21,7 @@ const AppBar = () => {
         width: "100%",
         justifyContent: "space-between",
         overflowX: "auto",
+        boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.1)",
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -59,9 +50,6 @@ const AppBar = () => {
         <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
           <Workspaces />
           <Recent />
-          <Started />
-          <Templates />
-          <Button variant="outlined">Create</Button>
         </Box>
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>

@@ -29,7 +29,6 @@ function AutoCompleteSearchBoard() {
     const searchPath = `?${createSearchParams({ "q[title]": searchValue })}`;
     console.log(searchPath);
 
-    // Gọi API...
     setLoading(true);
     fetchBoardsAPI(searchPath)
       .then((res) => {
